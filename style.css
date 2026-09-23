@@ -1515,8 +1515,8 @@ dialog > div button {
   color: #fff;
 }
 .social-links svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   fill: currentColor;
   stroke: none;
 }
@@ -1528,7 +1528,7 @@ dialog > div button {
 }
 .social-links a:hover,
 .social-links a:focus-visible {
-  color: var(--red);
+  color: var(--blue);
 }
 @media (max-width: 650px) {
   .hero-photo > img {
