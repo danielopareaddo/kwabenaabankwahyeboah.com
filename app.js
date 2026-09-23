@@ -1,6 +1,8 @@
 const menu = document.querySelector(".menu"),
   nav = document.querySelector("nav");
-document.querySelector("#copyright-year").textContent = new Date().getFullYear();
+document
+  .querySelectorAll("#copyright-year, .copyright-year")
+  .forEach((year) => (year.textContent = new Date().getFullYear()));
 const hero = document.querySelector(".hero"),
   rebuildMessage = document.querySelector(".candidate-message"),
   principles = document.querySelector(".principles"),

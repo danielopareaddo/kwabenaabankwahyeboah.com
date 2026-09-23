@@ -16,6 +16,7 @@ body {
   font-family: Arial, sans-serif;
   color: var(--ink);
   overflow-x: hidden;
+  padding-top: 94px;
 }
 
 /* Defer below-the-fold rendering while reserving stable space. */
@@ -43,7 +44,8 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 0 5vw;
-  position: relative;
+  position: fixed;
+  inset: 0 0 auto;
   z-index: 5;
   background: #fff;
 }
@@ -533,6 +535,9 @@ dialog > div button {
   }
 }
 @media (max-width: 650px) {
+  body {
+    padding-top: 82px;
+  }
   header {
     height: 82px;
   }
