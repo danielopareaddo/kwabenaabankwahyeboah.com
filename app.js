@@ -1,5 +1,5 @@
 const menu = document.querySelector(".menu"),
-  nav = document.querySelector("nav");
+  nav = document.querySelector("#site-navigation");
 document
   .querySelectorAll("#copyright-year, .copyright-year")
   .forEach((year) => (year.textContent = new Date().getFullYear()));
@@ -16,12 +16,12 @@ if (hero && principles && unityPanel && rebuildMessage && campaignBanner) {
   campaignBanner.after(unitySection);
   principles.prepend(rebuildMessage);
 }
-menu.onclick = () => {
+menu?.addEventListener("click", () => {
   const open = menu.getAttribute("aria-expanded") !== "true";
   menu.setAttribute("aria-expanded", String(open));
   nav.classList.toggle("open", open);
-};
-nav.querySelectorAll("a").forEach(
+});
+nav?.querySelectorAll("a").forEach(
   (a) =>
     (a.onclick = () => {
       nav.classList.remove("open");
@@ -58,7 +58,10 @@ function go(i, user = false) {
     stageImg.alt = t.dataset.caption;
     caption.textContent = t.dataset.caption;
     number.textContent = String(slide + 1).padStart(2, "0");
-    thumbs.forEach((x, j) => x.classList.toggle("active", j === slide));
+    thumbs.forEach((x, j) => {
+      x.classList.toggle("active", j === slide);
+      x.setAttribute("aria-current", j === slide ? "true" : "false");
+    });
     const strip = t.parentElement;
     const target = t.offsetLeft - (strip.clientWidth - t.offsetWidth) / 2;
     strip.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
@@ -75,19 +78,26 @@ document
   ?.addEventListener("click", () => go(slide + 1, true));
 function restart() {
   clearInterval(timer);
-  timer = setInterval(() => go(slide + 1), 6000);
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    timer = setInterval(() => go(slide + 1), 6000);
+  }
 }
 restart();
 document
   .querySelector(".carousel")
   ?.addEventListener("mouseenter", () => clearInterval(timer));
 document.querySelector(".carousel")?.addEventListener("mouseleave", restart);
-const dialog = document.querySelector("dialog");
+const dialog = document.querySelector("dialog"),
+  dialogClose = dialog?.querySelector(".close");
+let lastFocusedElement;
 function openLightbox(src, text) {
+  if (!dialog) return;
+  lastFocusedElement = document.activeElement;
   dialog.querySelector("img").src = src;
   dialog.querySelector("img").alt = text;
   dialog.querySelector("p").textContent = text;
   dialog.showModal();
+  dialogClose?.focus();
 }
 stage?.addEventListener("click", () =>
   openLightbox(stageImg.src, caption.textContent),
@@ -102,7 +112,10 @@ document
           b.querySelector("span").textContent.replace(" ↗", ""),
         )),
   );
-dialog.querySelector(".close").onclick = () => dialog.close();
+dialogClose?.addEventListener("click", () => {
+  dialog.close();
+  lastFocusedElement?.focus();
+});
 document.querySelector("#prev").onclick = () => {
   go(slide - 1, true);
   openLightbox(stageImg.src, caption.textContent);
@@ -111,10 +124,16 @@ document.querySelector("#next").onclick = () => {
   go(slide + 1, true);
   openLightbox(stageImg.src, caption.textContent);
 };
-dialog.onclick = (e) => {
+dialog?.addEventListener("click", (e) => {
   if (e.target === dialog) dialog.close();
-};
-dialog.onkeydown = (e) => {
+});
+dialog?.addEventListener("close", () => lastFocusedElement?.focus());
+dialog?.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    e.preventDefault();
+    dialog.close();
+    return;
+  }
   if (e.key === "ArrowRight") document.querySelector("#next").click();
   if (e.key === "ArrowLeft") document.querySelector("#prev").click();
-};
+});
