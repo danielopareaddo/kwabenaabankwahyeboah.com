@@ -1502,6 +1502,34 @@ dialog > div button {
   border-bottom: 2px solid var(--red);
   padding-bottom: 2px;
 }
+.social-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 8px;
+}
+.site-credit .social-links a {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  color: #fff;
+}
+.social-links svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  stroke: none;
+}
+.social-links svg rect,
+.social-links svg circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.social-links a:hover,
+.social-links a:focus-visible {
+  color: var(--red);
+}
 @media (max-width: 650px) {
   .hero-photo > img {
     width: 100%;
